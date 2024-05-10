@@ -1,4 +1,6 @@
 # ProgettoRICEGO
+Vidotti SImone 4 TEL A ISIS Malignani progetto RICEGO! completato durante il corso di javascript.
+
 Questo progetto in html, css e javascript serve per salvare ricevute.
 L'utente deve inserire dei parametri della ricevuta e verranno salvati
 in un file txt che verrà scaricato attraverso una funzione Salva(); 
