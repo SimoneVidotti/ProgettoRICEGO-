@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Leggi e somma numeri da file di testo</title>
+
+    <link rel="icon" href="./Images/euro1.gif" type="image/x-icon"> <!-- Icona pagina -->
+
+    <style>
+        .buttonHome {
+            background-color: gray;
+            font-size: 13px;
+        }
+        
+        .buttonHome:hover , .buttonHome:active {
+            background-color: aqua;
+            text-align: center;
+            border: 1px;
+            border-style: solid;
+            font-size: 14px;
+        }
+
+        body {
+            background-color: black;
+        }
+
+        hr {
+            color: purple;
+        }
+
+        .buttonLeggiESomma {
+            background-color: red;
+            padding: 1px 50px;
+            font-size: 16px;
+        }
+
+        .buttonLeggiESomma:hover , .buttonLeggiESomma:active {
+            background-color: rgb(245, 74, 17);
+            text-align: center;
+            border: 3px;
+            border-style: solid;
+            padding: 1px 50px;
+            font-size: 18px;
+        }
+
+        h1 {
+            color: red;
+        }
+
+        h2 {
+            color: yellow;
+        }
+
+        h3 {
+            color: white;
+        }
+
+        h3:hover {
+            border-style: solid;
+            color: rgb(201, 201, 252);
+        }
+
+        h4:hover {
+            border-style: solid;
+            color: purple;
+        }
+
+        input {
+            background-color: rgb(255, 253, 253);
+            text-align: center;
+            border: 2px;
+            border-style: solid;
+            border-color: blueviolet;
+            padding: 1px 50px;
+            font-size: 16px;
+        }
+
+        input:hover {
+            background-color: rgb(182, 245, 237);
+            text-align: center;
+            border: 3px;
+            border-style: solid;
+            border-color: rgb(72, 250, 12);
+            padding: 1px 50px;
+            font-size: 18px;
+        }
+
+        div {
+            color: rgb(3, 247, 11);
+            font-size: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Inizio programma -->
+<strong> <h1> CALCOLO SOMME E QUOTA TOTALE:</h1> </strong>
+
+<img src="./Images/MATH.gif" height="200" width="400">
+
+<i> <h2> Seleziona file o files txt: </h2> </i>
+<input type="file" id="fileInput" accept=".txt" multiple>
+
+<br> <br> <br>
+
+<i> <h2> Una volta selezionato/i file/s, puoi visualizzare quota/e e la quota totale: </h2> </i>
+
+<button class="buttonLeggiESomma" onclick="leggiESomma()"> <strong> <h3> Calcola </h3> </strong> </button>
+
+<br> <br> <br>
+
+<div id="risultatiSomma"> </div>
+
+<br>
+
+<div id="RisultatoQuotaTotale"> </div>
+
+<script>
+function leggiESomma() {
+    let QuotaTotale = 0;
+    const fileInput = document.getElementById('fileInput');
+    const files = fileInput.files;
+
+    if (!files.length) {
+        alert('Seleziona almeno un file.');
+        return;
+    }
+
+    document.getElementById('risultatiSomma').innerText = ''; // Resetta eventuali risultati precedenti
+    document.getElementById('RisultatoQuotaTotale').innerText = ''; // Resetta eventuali risultati precedenti
+
+    const carattereSpeciale = '@';
+
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            const contenuto = event.target.result;
+
+            // Definisci l'espressione regolare per trovare numeri dopo il carattere speciale
+            const regex = new RegExp(`${carattereSpeciale}(\\d+)`, 'g');
+            let match;
+            let somma = 0;
+
+            // Trova i numeri e aggiungili alla somma
+            while ((match = regex.exec(contenuto)) !== null) {
+                const numero = parseInt(match[1], 10); // Il numero è nella posizione 1 del match
+                somma += numero;
+                QuotaTotale += numero;
+            }
+
+            // Mostra la somma nel documento per ciascun file
+            const risultatoSomma = document.createElement('div');
+            risultatoSomma.innerText = `QUOTA DI "${file.name}" : ${somma} €`;
+            document.getElementById('risultatiSomma').appendChild(risultatoSomma);
+            
+            if (i === (files.length - 1)) {
+                StampaQuotaTotale();
+            }
+        }
+
+        reader.onerror = function(event) {
+            console.error('Errore nella lettura del file:', event.target.error);
+        };
+
+        // Leggi il contenuto del file come testo
+        reader.readAsText(file);
+
+        
+    }
+
+    function StampaQuotaTotale() {
+        // Mostra la somma totale dei documenti txt
+        const RisultatoQuotaTotale = document.createElement('div');
+        RisultatoQuotaTotale.innerText = `QUOTA TOTALE: ${QuotaTotale} €`;
+        document.getElementById('RisultatoQuotaTotale').appendChild(RisultatoQuotaTotale);
+    } 
+}
+</script>
+
+    <br> <hr> <br>
+
+    <!-- Tasto home -->
+    <button class="buttonHome"> <!-- Serve per ritornare al menu operazionale -->
+        <img src="./Images/Home.gif" height="150" width="150"> <a href="IndexMenu.html"> <h4> HOME!</h4> </a> 
+    </button>
+</body>
+</html>
